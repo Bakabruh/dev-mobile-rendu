@@ -68,15 +68,19 @@ class _CalculatorState extends State<Calculator> {
   }
 
   void onNewDigit(String digit) {
-    // TODO
+    input = double.parse(digit);
   }
 
   void onNewSymbol(String digit) {
-    // TODO
+    symbol = digit;
+    previousInput = input;
+    input = null;
   }
 
   void onEquals() {
-    // TODO
+    if (input == null || previousInput == null || symbol == null) {
+      return;
+    } else if (input == 0 && symbol == null) {}
   }
 
   @override
