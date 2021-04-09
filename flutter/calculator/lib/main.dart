@@ -37,6 +37,48 @@ class _CalculatorState extends State<Calculator> {
   double? previousInput;
   String? symbol;
 
+  void onItemClicked(String value) {
+    print('On Click $value');
+
+    switch (value) {
+      case '0':
+      case '1':
+      case '2':
+      case '3':
+      case '4':
+      case '5':
+      case '6':
+      case '7':
+      case '8':
+      case '9':
+        onNewDigit(value);
+        break;
+      case '+':
+      case '-':
+      case '/':
+      case '*':
+        onNewSymbol(value);
+        break;
+      case '=':
+        onEquals();
+    }
+
+    // Force l'interface à se redessiner
+    setState(() {});
+  }
+
+  void onNewDigit(String digit) {
+    // TODO
+  }
+
+  void onNewSymbol(String digit) {
+    // TODO
+  }
+
+  void onEquals() {
+    // TODO
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,11 +97,53 @@ class _CalculatorState extends State<Calculator> {
             ),
             Flexible(
               flex: 8,
-              child: Ink(
-                color: AppColors.inputContainerBackground,
+
+              // Column = vertical
+              child: Column(
+                // Pour chaque nouvelle ligne, on itère sur chaque cellule
+                children: grid.map((List<String> line) {
+                  return Expanded(
+                    child: Row(
+                        children: line
+                            .map(
+                              (String cell) => Expanded(
+                                child: InputButton(
+                                  label: cell,
+                                  onTap: onItemClicked,
+                                ),
+                              ),
+                            )
+                            .toList(growable: false)),
+                  );
+                }).toList(growable: false),
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class InputButton extends StatelessWidget {
+  final String label;
+  final ValueChanged<String>? onTap;
+
+  InputButton({required this.label, required this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () => onTap?.call(label),
+      child: Ink(
+        height: double.infinity,
+        decoration: BoxDecoration(
+            border: Border.all(color: AppColors.white, width: 0.5),
+            color: AppColors.inputContainerBackground),
+        child: Center(
+          child: Text(
+            label,
+          ),
         ),
       ),
     );
