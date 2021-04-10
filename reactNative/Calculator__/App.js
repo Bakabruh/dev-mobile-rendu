@@ -91,35 +91,42 @@ _handleStringInput(str) {
       case '*':
       case '+':
       case '-':
+      case '.':
           this.setState({
               selectedSymbol: str,
               previousInputValue: this.state.inputValue,
               inputValue: 0
           });
-          break;
+          break
       case '=':
             let symbol = this.state.selectedSymbol,
                 inputValue = this.state.inputValue,
                 previousInputValue = this.state.previousInputValue;
 
             if (!symbol) {
-                return;
+                return
+            }
+
+            if(symbol == '/' && inputValue == 0) {
+              alert('Division par 0 impossible !')
             }
 
             this.setState({
                 previousInputValue: 0,
-                inputValue: eval(previousInputValue + symbol + inputValue),
-                selectedSymbol: null
+                inputValue: eval(previousInputValue + symbol + inputValue)
             });
-            break;
-      case 'CE':
+        break
+      case 'C':
         this.setState({
           inputValue: 0
         })
         break
-      case 'C':
+
+      case 'CE':
+        console.log(this.state.inputValue)
         this.setState({
-          inputValue: Math.floor(inputValue/10)
+          inputValue: this.state.previousInputValue,
+          selectedSymbol: null
         })
         break
   }
